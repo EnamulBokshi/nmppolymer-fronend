@@ -6,7 +6,7 @@ import NavPrimary from '../navs/NavPrimary';
 import SwiperSlider from '../slider/swiper/SwiperSlider';
 function Header() {
   return (
-   <header className="h-[500px] realtive bg-[url('https://images.pexels.com/photos/221576/pexels-photo-221576.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')]">
+   <header className="h-[500px] realtive bg-hero-texture bg-cover">
    <div className='bg-black/60 h-[500px] '>
    <div className='flex  justify-between bg-black/50 px-5  py-2'>
         <div className='flex gap-3 '>

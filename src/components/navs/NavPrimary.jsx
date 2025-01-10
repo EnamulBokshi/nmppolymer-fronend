@@ -36,7 +36,7 @@ function NavPrimary() {
               key={index}
               href="#"
               className={`${isSticky? '':'text-white'} font-bold text-center relative group px-3 ${item == 'Home' ? 'border-b border-red-300': ''}`}
-              onClick={toggleMenu}
+              
             >
               {item}
               <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>

@@ -2,7 +2,7 @@ import React from 'react'
 import { LogoFull } from '..'
 function Footer() {
   return (
-    <footer  className='bg-gray-900 px-10  text-gray-600'>
+    <footer  className='bg-gray-900 px-10 pt-10 text-gray-600'>
         <div className='py-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4'>
             <div className='flex flex-col items-center md:items-start space-y-4'>
                 <img src={LogoFull} alt="Logo"  className='w-28 h-28 rounded-full py-8'/>

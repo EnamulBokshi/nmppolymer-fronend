@@ -26,7 +26,7 @@ function NavPrimary() {
   }, []);
 
   return (
-<nav className={`md:px-20 py-5 px-10 items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${isSticky ? 'fixed top-0 w-full bg-white shadow-lg z-50' : 'relative'}`}>
+<nav className={`md:px-20  px-5  items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${isSticky ? 'fixed top-0 w-full py-2 bg-white shadow-lg z-50' : 'py-5 relative'}`}>
       <div className="flex gap-4 justify-between items-center">
         <img src={LogoFull} alt="Logo" className="w-16 rounded-full" />
         
@@ -48,7 +48,7 @@ function NavPrimary() {
           <div className="md:hidden">
             {!showMenu && (
               <CiMenuFries
-                className="text-white text-3xl cursor-pointer"
+                className = {`${isSticky ? '' : 'text-white'} text-3xl cursor-pointer`}
                 onClick={toggleMenu}
               />
             )}

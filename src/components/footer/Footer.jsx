@@ -33,10 +33,10 @@ function Footer() {
         <p className='block pt-0.5 bg-gray-500'></p>
         <div className='flex md:justify-between px-8 py-4 md:flex-row md:items-center items-center flex-wrap flex-col'>
             <div className='flex gap-5  '>
-                <a href='#' className='hover:text-red-500 duration-200'>Terms of Use</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Privacy</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Sitemap</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Contact</a>
+                <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Terms of Use</a>
+                <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Privacy</a>
+                <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Sitemap</a>
+                <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Contact</a>
             </div>
             <div>© 2025 NMP ploymer | All rights reserved</div>
         </div>

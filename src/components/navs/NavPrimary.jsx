@@ -103,9 +103,9 @@ function NavPrimary() {
           {navItems.map((item, index) => (
             <Link
               key={index}
-              to={`/${item.link}`}
+              to={`${item.link}`}
               className="text-white font-bold text-center relative group px-3"
-              onClick={toggleMenu}
+              
             >
               {item.name}
               <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>

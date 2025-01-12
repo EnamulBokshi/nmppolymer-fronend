@@ -1,3 +1,4 @@
+// Desc: Import and export all components
 import LogoFull from '../assets/logo.jpeg';
 import Header from './header/Header';
 import NavPrimary from './navs/NavPrimary';
@@ -13,6 +14,7 @@ import CategoryAccordion from './Category';
 import Pagination from './pagination/Pagination';
 import SectionHeader from './sectionHeader/SectionHeader';
 import SearchBox from './Search';
+import Boilerplate from './Boilerplate';
 export{
     LogoFull,
     NavPrimary,
@@ -29,4 +31,5 @@ export{
     Pagination,
     SectionHeader,
     SearchBox,
+    Boilerplate,
 }   

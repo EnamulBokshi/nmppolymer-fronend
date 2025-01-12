@@ -3,11 +3,33 @@ import { BtnPrimary, LogoFull } from "..";
 import { CiMenuFries } from "react-icons/ci";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { Link } from "react-router";
+import { useLocation } from "react-router-dom";
 
 function NavPrimary() {
+  const navItems = [
+    {
+      name: "Home",
+      link: "/",
+    },
+    {
+      name: "Store Locator",
+      link: "/store",
+    },
+    {
+      name: "About",
+      link: "/about",
+    },
+    {
+      name: "Contact",
+      link: "/contact",
+    },
+  ];
+  const location = useLocation();
+
   const [showMenu, setShowMenu] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-
+  const [active, setActive] = useState("Home");
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
   };
@@ -25,22 +47,28 @@ function NavPrimary() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    navItems.forEach((item) => {
+      if (location.pathname === item.link) {
+        setActive(item.name);
+      }
+    });
+  } , [location]);
   return (
 <nav className={`md:px-20  px-5  items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${isSticky ? 'fixed top-0 w-full py-2 bg-white shadow-lg z-50' : 'py-5 relative'}`}>
       <div className="flex gap-4 justify-between items-center">
         <img src={LogoFull} alt="Logo" className="w-16 rounded-full" />
         
         <div className="hidden md:flex gap-4 items-center justify-center">
-          {["Home", "About", "Services", "Contact"].map((item, index) => (
-            <a
+          {navItems.map((item, index) => (
+            <Link
               key={index}
-              href="#"
-              className={`${isSticky? '':'text-white'} font-bold text-center relative group px-3 ${item == 'Home' ? 'border-b border-red-300': ''}`}
-              
+              to={`${item.link}`}
+              className={`${isSticky? '':'text-white'} ${active == item.name ? 'border-b border-red-900':''}font-bold text-center relative group px-3 `}
             >
-              {item}
+              {item.name}
               <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -72,16 +100,16 @@ function NavPrimary() {
         />
 
         <div className="flex flex-col gap-y-4">
-          {["Home", "About", "Services", "Contact"].map((item, index) => (
-            <a
+          {navItems.map((item, index) => (
+            <Link
               key={index}
-              href="#"
+              to={`/${item.link}`}
               className="text-white font-bold text-center relative group px-3"
               onClick={toggleMenu}
             >
-              {item}
+              {item.name}
               <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

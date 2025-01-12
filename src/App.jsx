@@ -1,17 +1,21 @@
-import { Footer,Header, Main} from "./components"
-import { Contact, Dashboard } from "./pages"
+// Desc: Main App component
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home, ProductDetails,StoreLocator,ContactUs,About } from './pages';
+
+import 'tailwindcss/tailwind.css';
 function App() {
   return (
-    <>
-    <Header />
-    {/* <Contact /> */}
-    <main className="p-5">
-      {/* <CategoryAccordion categories={['Produts','Plastics','Pipe']}/> */}
-        <Main />
-    </main>
-     <Footer />
-     {/* <Dashboard /> */}
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/product-details/:id" element={<ProductDetails />} />
+        <Route path='/store' element={<StoreLocator />} />
+        <Route path='/contact' element={<ContactUs />} />
+        <Route path='/about' element={<About />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </Router>
+  );
+
 }
 export default App

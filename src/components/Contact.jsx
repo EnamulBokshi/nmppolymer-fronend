@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'tailwindcss/tailwind.css';
 
 const Contact = () => {
     const [loading, setLoading] = useState(false);

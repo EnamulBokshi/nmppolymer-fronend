@@ -1,8 +1,8 @@
 import React from 'react'
-
+import { CategoryAccordion, Products } from '../'
 function Main() {
   return (
-    <div>Main</div>
+    <Products/>
   )
 }
 

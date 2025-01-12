@@ -4,5 +4,5 @@ import Dashboard from "./dashboard/Dashboard";
 export
 {
     Contact,
-    Dashboard,  
+    Dashboard,   
 }

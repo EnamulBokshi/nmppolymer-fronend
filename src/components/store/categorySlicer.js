@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice,nanoid } from '@reduxjs/toolkit';
 
 const initialState = {
     categories: [],
@@ -23,7 +23,7 @@ const categorySlice = createSlice({
             state.error = action.payload;
         },
         addCategory(state, action) {
-            state.categories.push(action.payload);
+            state.categories = [...state.categories, { id: nanoid(), ...action.payload }];
         },
         removeCategory(state, action) {
             state.categories = state.categories.filter(category => category.id !== action.payload);

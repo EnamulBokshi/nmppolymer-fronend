@@ -6,26 +6,27 @@ import store from './components/store/sotre.js'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import Contact from './pages/contact/Contact'
 import Dashboard from './pages/dashboard/Dashboard'
-const routes = createBrowserRouter([
-  {
-    path:'/',
-    element:<App/>,
-    children:[
-      {
-        path:'/contact',
-        element:<Contact/>
-      },
-      {
-        path:'/dashboard',
-        element:<Dashboard/>
-      }
-    ]
-  }
-])
+// const routes = createBrowserRouter([
+//   {
+//     path:'/',
+//     element:<App/>,
+//     children:[
+//       {
+//         path:'/contact',
+//         element:<Contact/>
+//       },
+//       {
+//         path:'/dashboard',
+//         element:<Dashboard/>
+//       }
+//     ]
+//   }
+// ])
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={routes} />
+      {/* <RouterProvider router={routes} /> */}
+      <App />
     </Provider>
   </StrictMode>,
 )

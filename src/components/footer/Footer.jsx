@@ -1,5 +1,6 @@
 import React from 'react'
 import { LogoFull } from '..'
+import { Link } from 'react-router'
 function Footer() {
   return (
     <footer  className='bg-gray-900 px-10 pt-10 text-gray-600'>
@@ -13,15 +14,15 @@ function Footer() {
             </div>
             <div className='space-y-4 flex flex-col items-center md:items-start'>
                 <h1 className='text-white mb-3'>About Us</h1>
-                <a href='#' className='hover:text-red-500 duration-200'>Inception</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Milestones</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Factories</a>
+                <Link to='/about' className='hover:text-red-500 duration-200'>Inception</Link>
+                <Link to={`/about`} className='hover:text-red-500 duration-200'>Milestones</Link>
+                <Link to={`/about`} className='hover:text-red-500 duration-200'>Factories</Link>
             </div>
             <div className='space-y-4 flex flex-col items-center md:items-start'>
                 <h1 className='text-white'>Businesses</h1>
-                <a href='#' className='hover:text-red-500 duration-200'>Category & Product</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Brands</a>
-                <a href='#' className='hover:text-red-500 duration-200'>Export</a>
+                <Link to={``} className='hover:text-red-500 duration-200'>Category & Product</Link>
+                <Link to={``} className='hover:text-red-500 duration-200'>Brands</Link>
+                <Link to={``} className='hover:text-red-500 duration-200'>Export</Link>
             </div>
             <div className='space-y-4 flex flex-col items-center md:items-start'>
                 <h1 className='text-white'>Legal</h1>
@@ -36,9 +37,9 @@ function Footer() {
                 <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Terms of Use</a>
                 <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Privacy</a>
                 <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Sitemap</a>
-                <a href='#' className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Contact</a>
+                <Link to={`/contact`} className='hover:text-red-500 duration-200 text-xs sm:text-sm'>Contact</Link>
             </div>
-            <div>© 2025 NMP ploymer | All rights reserved</div>
+            <div className='text-center'>© 2025 NMP ploymer | All rights reserved</div>
         </div>
     </footer>
   )

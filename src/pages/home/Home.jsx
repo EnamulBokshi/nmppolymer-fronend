@@ -1,10 +1,10 @@
 import React from 'react'
-import { Boilerplate, Main } from "../../components";
+import { Boilerplate,Products } from "../../components";
 
 function Home() {
   return (
-    <Boilerplate>
-      <Main />
+    <Boilerplate height={'500px'} bgImage={'hero-texture'}>
+          <Products/>
     </Boilerplate>
   )
 }

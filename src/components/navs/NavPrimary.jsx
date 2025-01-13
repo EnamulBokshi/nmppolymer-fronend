@@ -6,7 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { Link } from "react-router";
 import { useLocation } from "react-router-dom";
 
-function NavPrimary() {
+function NavPrimary({className = ''}) {
   const navItems = [
     {
       name: "Home",
@@ -24,6 +24,10 @@ function NavPrimary() {
       name: "Contact",
       link: "/contact",
     },
+    {
+      name: "Products",
+      link: "/products",
+    }
   ];
   const location = useLocation();
 
@@ -55,7 +59,7 @@ function NavPrimary() {
     });
   } , [location]);
   return (
-<nav className={`md:px-20  px-5  items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${isSticky ? 'fixed top-0 w-full py-2 bg-white shadow-lg z-50' : 'py-5 relative'}`}>
+<nav className={` ${className} md:px-20  px-5  items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${isSticky ? 'fixed top-0 w-full py-2 bg-white shadow-lg z-50' : 'py-5 relative'}`}>
       <div className="flex gap-4 justify-between items-center">
         <img src={LogoFull} alt="Logo" className="w-16 rounded-full" />
         

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     products: [],
+    catalogues: [],
     loading: false,
     error: null,
 };
@@ -34,6 +35,24 @@ const productSlice = createSlice({
                 state.products[index] = action.payload;
             }
         },
+
+        fetchCataloguesStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchCataloguesSuccess(state,action) {
+            state.loading = false;
+            state.catalogues = action.payload;
+        },
+        fetchCataloguesFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        addCatalogue(state, action) {
+            state.catalogues = [action.payload, ...state.catalogues];
+        },
+
+
     },
 });
 

@@ -1,6 +1,6 @@
 // Desc: Main App component
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, ProductDetails,StoreLocator,ContactUs,About } from './pages';
+import { Home, ProductDetails,StoreLocator,ContactUs,About,AllProducts } from './pages';
 import 'tailwindcss/tailwind.css';
 function App() {
   return (
@@ -11,6 +11,7 @@ function App() {
         <Route path='/store' element={<StoreLocator />} />
         <Route path='/contact' element={<ContactUs />} />
         <Route path='/about' element={<About />} />
+        <Route path='/products' element={<AllProducts />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </Router>

@@ -31,7 +31,7 @@ const ContactUs = () => {
     };
 
     return (
-        <Boilerplate>
+        <Boilerplate bgImage={'bg-contact-texture'}>
           <section className='container mx-auto py-20 bg-slate-50 rounded'>
             <div className='flex gap-5 p-5 flex-col md:flex-row md:justify-evenly gap-y-5 md:items-start'>
                 <div className=''>
@@ -97,7 +97,9 @@ const ContactUs = () => {
                 <div className=''>
                     <div>
                         <h1 className='text-3xl font-bold '>Contact Information</h1>
-                        <p className='text-gray-400'>We are here to help you</p>
+                        <p className='text-gray-400'>Feel free to call, mail or visit us any time</p>
+            
+                        <p className='text-gray-400'>24/7, We are here to help you</p>
                         <div className='mt-5'>
                             <p className='text-lg font-bold'> <CiHome size={30}/> Address</p>
                             <p>Kamrangirchar, Lalbag, Dhaka-1211, Bangladesh</p>

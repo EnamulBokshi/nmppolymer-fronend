@@ -6,6 +6,7 @@ import { Boilerplate, Main } from '../components';
 import ContactUs from './contact/ContactUs';
 import StoreLocator from './storeLocator/StoreLocator';
 import About from './about/About';
+import AllProducts from './products/AllProducts';
 export {
     Main,
     Boilerplate,
@@ -15,4 +16,5 @@ export {
     ContactUs,
     StoreLocator,
     About,
+    AllProducts,
 }

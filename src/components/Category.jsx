@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const CategoryAccordion = ({ categories, setActiveSection}) => {
-    const [activeIndex, setActiveIndex] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(0);
     const handleToggle = (index) => {
-        setActiveIndex(activeIndex === index ? null : index);
-        setActiveSection(categories[index  ])
+        setActiveIndex(index);
+        setActiveSection(categories[index])
     };
 
     return (
@@ -19,11 +19,11 @@ const CategoryAccordion = ({ categories, setActiveSection}) => {
                         <li className='px-3 py-1 list-none'>{item}</li>
                     </div>
                     {
-                        activeIndex === index && (
-                            <div className=' '>
-                        
-                    </div>
-                        )
+                    //     activeIndex === index && (
+                    // //         <div className='text-sm text-center'>
+                    // //     ....
+                    // // </div>
+                    //     )
                     }
                    </div>
                 ))

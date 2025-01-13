@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import { Boilerplate } from "..";
 import { CategoryAccordion } from "../../components";
+import { Factory,FAQ,Inception,MissionVission,Catalogue} from ".";
 function About() {
-  const [activeCategory, setActiveCategory] = useState('inception');
-
+  
+  const [activeCategory, setActiveCategory] = useState('Inception');
+  const categories = ['Inception','Mission & Vission','Factory','Catalogue','FAQ'];
   return (
-    <Boilerplate>
+    <Boilerplate height={'300px'} bgImage={'bg-about-texture'}>
       <div className="flex gap-5 flex-col md:flex-row">
         <div className="md:w-1/3  p-5">
-          <CategoryAccordion  setActiveSection={setActiveCategory} categories={['Inception','Mission & Vission', 'Factory','FAQ','Catalogue']}/>
+          <CategoryAccordion  setActiveSection={setActiveCategory} categories={categories}/>
         </div>
         <div className="md:w-2/3  p-5 min-h-96">
-          <h1 className="text-3xl font-bold text-red-900">{activeCategory.toUpperCase()}</h1>
-          <p className="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit </p>   
+        {
+          activeCategory === 'Inception' && <Inception />
+        }
+        {
+          activeCategory === 'Mission & Vission' && <MissionVission />
+        }
+        {
+          activeCategory === 'Factory' && <Factory />
+        }
+        {
+          activeCategory === 'FAQ' && <FAQ />
+        }
+        {
+          activeCategory === 'Catalogue' && <Catalogue />
+        }
+           
         </div>
       </div>
     </Boilerplate>
@@ -20,13 +36,3 @@ function About() {
 }   
 
 export default About;
-
-
-function Inception () {
-  return (
-    <div>
-      <h1>Inception</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatem.</p>
-    </div>
-  )
-}

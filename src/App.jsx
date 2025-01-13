@@ -1,7 +1,6 @@
 // Desc: Main App component
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home, ProductDetails,StoreLocator,ContactUs,About } from './pages';
-
 import 'tailwindcss/tailwind.css';
 function App() {
   return (

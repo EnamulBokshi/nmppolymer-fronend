@@ -15,6 +15,7 @@ import Pagination from './pagination/Pagination';
 import SectionHeader from './sectionHeader/SectionHeader';
 import SearchBox from './Search';
 import Boilerplate from './Boilerplate';
+import FooterHeader from './footerContact/FooterHeader';
 export{
     LogoFull,
     NavPrimary,
@@ -32,4 +33,5 @@ export{
     SectionHeader,
     SearchBox,
     Boilerplate,
+    FooterHeader,
 }   

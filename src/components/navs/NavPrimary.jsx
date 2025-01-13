@@ -13,7 +13,7 @@ function NavPrimary() {
       link: "/",
     },
     {
-      name: "Store Locator",
+      name: "Store",
       link: "/store",
     },
     {

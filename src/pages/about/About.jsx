@@ -6,11 +6,11 @@ function About() {
 
   return (
     <Boilerplate>
-      <div className="flex gap-5 flex-nowrap">
-        <div className="w-1/3  p-5">
+      <div className="flex gap-5 flex-col md:flex-row">
+        <div className="md:w-1/3  p-5">
           <CategoryAccordion  setActiveSection={setActiveCategory} categories={['Inception','Mission & Vission', 'Factory','FAQ','Catalogue']}/>
         </div>
-        <div className="w-2/3  p-5 min-h-96">
+        <div className="md:w-2/3  p-5 min-h-96">
           <h1 className="text-3xl font-bold text-red-900">{activeCategory.toUpperCase()}</h1>
           <p className="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit </p>   
         </div>

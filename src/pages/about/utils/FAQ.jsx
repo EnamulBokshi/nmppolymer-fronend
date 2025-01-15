@@ -20,7 +20,9 @@ const FAQ = () => {
         answer: "We ensure that all our products meet the highest quality standards. Each product goes through rigorous testing and quality control before it reaches you."
     });
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-gray-300">
+        <div className="max-w-4xl mx-auto p-6 bg-gray-100">
+      <div className="max-w-4xl w-full bg-white shadow-md rounded-lg p-8 ">
+
             <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
             <div className="space-y-4">
                 {faqs.map((faq, index) => (
@@ -29,6 +31,7 @@ const FAQ = () => {
                         <p className="text-gray-700">{faq.answer}</p>
                     </div>
                 ))}
+            </div>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { createSlice,nanoid } from '@reduxjs/toolkit';
 
 const initialState = {
-    categories: [],
+    categories: ['Pipe', 'Electric',  'Lighting', 'Accessories'],
     loading: false,
     error: null,
 };

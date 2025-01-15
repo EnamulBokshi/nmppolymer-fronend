@@ -1,5 +1,5 @@
 // Desc: Main entry point for all the pages
-import Dashoboard from './dashboard/Dashboard';
+import Dashoboard from './admin/dashboard/Dashboard';
 import Home from './home/Home'
 import ProductDetails from './product-details/ProductDetails';
 import { Boilerplate, Main } from '../components';

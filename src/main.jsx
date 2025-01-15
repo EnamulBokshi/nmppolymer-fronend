@@ -3,9 +3,7 @@ import App from './App'
 import { createRoot } from 'react-dom/client'
 import {Provider} from 'react-redux'
 import store from './components/store/sotre.js'
-import { createBrowserRouter,RouterProvider } from 'react-router-dom'
-import Contact from './pages/contact/Contact'
-import Dashboard from './pages/dashboard/Dashboard'
+
 // const routes = createBrowserRouter([
 //   {
 //     path:'/',

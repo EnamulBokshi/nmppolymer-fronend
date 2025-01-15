@@ -1,7 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
-    products: [],
+    products: [
+        {
+            id: nanoid(),
+            name: "Electric Pipe",
+            description: "product description",
+            price: 200,
+            image:
+              "https://images.pexels.com/photos/357440/pexels-photo-357440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            image2:"https://images.pexels.com/photos/357440/pexels-photo-357440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            imgae3:"https://images.pexels.com/photos/357440/pexels-photo-357440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            image4:"https://images.pexels.com/photos/357440/pexels-photo-357440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            category: ["Pipe", "Electric"],
+        }, 
+        {
+            id:2,
+            name: "White black pipe"   ,
+            description: "The pipe is good for water supply ",
+            image: "https://images.pexels.com/photos/1029635/pexels-photo-1029635.jpeg?auto=compress&cs=tinysrgb&w=600",
+            image2:"https://images.pexels.com/photos/2837863/pexels-photo-2837863.jpeg?auto=compress&cs=tinysrgb&w=600",
+            image3:"https://images.pexels.com/photos/4017967/pexels-photo-4017967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            image4:"https://images.pexels.com/photos/357440/pexels-photo-357440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        
+            price: 100,
+            category: ['white', 'black'],
+        
+        }
+    ],
     catalogues: [],
     loading: false,
     error: null,
@@ -35,7 +61,12 @@ const productSlice = createSlice({
                 state.products[index] = action.payload;
             }
         },
-
+        findProduct(state, action) {    
+            return state.products.find(product => product.id === action.payload);
+        },
+        // relatedProducts(state, action) {
+        //     return state.products.filter(product => product.category.includes(action.payload));
+        // },
         fetchCataloguesStart(state) {
             state.loading = true;
             state.error = null;
@@ -56,6 +87,6 @@ const productSlice = createSlice({
     },
 });
 
-export const { fetchProductsStart, fetchProductsSuccess, fetchProductsFailure, addProduct, removeProduct, updateProduct } = productSlice.actions;   
+export const { fetchProductsStart, fetchProductsSuccess, fetchProductsFailure, findProduct,addProduct, removeProduct, updateProduct,relatedProducts } = productSlice.actions;   
 
 export default productSlice.reducer;

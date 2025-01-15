@@ -16,6 +16,10 @@ import SectionHeader from './sectionHeader/SectionHeader';
 import SearchBox from './Search';
 import Boilerplate from './Boilerplate';
 import FooterHeader from './footerContact/FooterHeader';
+import ProductCart from './products/ProductCart';
+import RelatedProducts from './relatedProducts/RelatedProducts';
+import Testimonial from './testimonial/Testimonial';
+import Category from './category/Category';
 export{
     LogoFull,
     NavPrimary,
@@ -34,4 +38,8 @@ export{
     SearchBox,
     Boilerplate,
     FooterHeader,
+    ProductCart,
+    RelatedProducts,
+    Testimonial,
+    Category,
 }   

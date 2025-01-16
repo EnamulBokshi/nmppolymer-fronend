@@ -65,6 +65,7 @@ export default function SwiperSlider() {
                     muted
                 autoPlay
                 loop
+                playsInline
                 > </video>
                   <div className="absolute top-0 flex items-center justify-center left-0 w-full h-full bg-black/60">
                     <div className="px-10 flex items-center justify-center">

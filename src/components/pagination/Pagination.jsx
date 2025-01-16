@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
+import { Link } from 'react-router';
 function Pagination({products,seeAll = true, productsPerPage}) {
   const totalProducts = products?.length;
   const totalPages = Math.ceil(totalProducts / productsPerPage);
@@ -18,7 +19,7 @@ function Pagination({products,seeAll = true, productsPerPage}) {
         <FaArrowRight />
       </button>
        { seeAll &&
-        <a href="#"  className='text-red-700 ms-5 uppercase font-serif font-bold'>See ALL</a>
+        <Link to={`/products`}  className='text-red-700 ms-5 uppercase font-serif font-bold'>See ALL</Link>
         }
 
       </div>

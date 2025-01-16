@@ -13,7 +13,7 @@ const Category = () => {
             <h2 className="text-2xl font-bold mb-4">Categories</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {categories.map((category) => (
-                    <div key={category.id} className="p-5 border cursor-pointer bg-red-700 text-white text-center rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div key={category.id} className="p-5 border cursor-pointer hover:bg-red-800 bg-red-700  text-white text-center rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                         <h3 className="text-xl font-semibold">{category.name}</h3>
                     </div>
                 ))}

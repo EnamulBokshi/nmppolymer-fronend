@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { BtnPrimary, LogoFull } from "..";
+import { BtnPrimary, LogoFull, SearchModal } from "..";
 import { CiMenuFries } from "react-icons/ci";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router";
 import { useLocation } from "react-router-dom";
 
-function NavPrimary({className = ''}) {
+function NavPrimary({ className = "", searchOnClick }) {
   const navItems = [
     {
       name: "Home",
@@ -27,13 +27,18 @@ function NavPrimary({className = ''}) {
     {
       name: "Products",
       link: "/products",
-    }
+    },
   ];
   const location = useLocation();
 
   const [showMenu, setShowMenu] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [active, setActive] = useState("Home");
+  const [showSearch, setShowSearch] = useState(false);
+  const handleSearch = () => {
+    setShowSearch((prev) => !prev);
+    console.log("search clicked");
+  };
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
   };
@@ -57,18 +62,26 @@ function NavPrimary({className = ''}) {
         setActive(item.name);
       }
     });
-  } , [location]);
+  }, [location]);
   return (
-<nav className={` ${className} md:px-20  px-5   items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${isSticky ? 'fixed top-0 w-full py-2 bg-white/40 backdrop-blur shadow-lg z-50' : 'py-5 relative'}`}>
+    <nav
+      className={` ${className} md:px-20  px-5   items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${
+        isSticky
+          ? "fixed top-0 w-full py-2 bg-white/40 backdrop-blur shadow-lg z-50"
+          : "py-5 relative"
+      }`}
+    >
       <div className="flex gap-4 justify-between items-center">
         <img src={LogoFull} alt="Logo" className="w-16 rounded-full" />
-        
+
         <div className="hidden md:flex gap-4 items-center justify-center">
           {navItems.map((item, index) => (
             <Link
               key={index}
               to={`${item.link}`}
-              className={`${isSticky? '':'text-white'} ${active == item.name ? 'border-b border-red-900':''}font-bold text-center relative group px-3 `}
+              className={`${isSticky ? "" : "text-white"} ${
+                active == item.name ? "border-b border-red-900" : ""
+              }font-bold text-center relative group px-3 `}
             >
               {item.name}
               <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
@@ -80,12 +93,17 @@ function NavPrimary({className = ''}) {
           <div className="md:hidden">
             {!showMenu && (
               <CiMenuFries
-                className = {`${isSticky ? '' : 'text-white'} text-3xl cursor-pointer`}
+                className={`${
+                  isSticky ? "" : "text-white"
+                } text-3xl cursor-pointer`}
                 onClick={toggleMenu}
               />
             )}
           </div>
-          <FaSearch className="text-2xl text-red-600 hover:text-red-700 hover:scale-105 cursor-pointer" />
+          <FaSearch
+            onClick={handleSearch}
+            className="text-2xl text-red-600 hover:text-red-700 hover:scale-105 cursor-pointer"
+          />
           <BtnPrimary>
             <FaShoppingCart className="inline me-3" />
             Shop Now
@@ -109,7 +127,6 @@ function NavPrimary({className = ''}) {
               key={index}
               to={`${item.link}`}
               className="text-white font-bold text-center relative group px-3"
-              
             >
               {item.name}
               <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
@@ -117,6 +134,20 @@ function NavPrimary({className = ''}) {
           ))}
         </div>
       </div>
+
+      <div></div>
+
+      {showSearch && (
+        <div className="absolute top-0 left-0 w-full h-screen bg-black/90 z-50 flex justify-center items-center">
+          <div
+            className="absolute text-3xl font-bold hover:text-red-600 top-10 right-10 text-white cursor-pointer"
+            onClick={() => setShowSearch(false)}
+          >
+            X
+          </div>
+          <SearchModal />
+        </div>
+      )}
     </nav>
   );
 }

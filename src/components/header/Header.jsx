@@ -1,13 +1,14 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { FaSquareFacebook, FaInstagram } from "react-icons/fa6";
 import { CiLinkedin, CiTwitter } from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
 import NavPrimary from '../navs/NavPrimary';
-
+import {SearchModal} from '../';
 import SwiperSlider from '../../components/slider/swiper/SwiperSlider';
 
 function Header({ bgImage = 'bg-hero-texture', varient, height = '300px', className = '' }) {
     const location = window.location.pathname;
+
     return (
         <header className={`${location == '/' ? 'h-[500px]':'h-[300px]'} relative  bg-cover bg-center bg-no-repeat ${bgImage} ${className}`}>
             <div className={`bg-black/60 h-[${height}]`}>
@@ -25,7 +26,7 @@ function Header({ bgImage = 'bg-hero-texture', varient, height = '300px', classN
                         </p>
                     </div>
                 </div>
-                <NavPrimary className='z-20'/>
+                <NavPrimary className='z-20' />
                 {
                     location === '/' && (
                         <div className='absolute top-0 left-0 w-full h-full bg-black/60 z-10'>
@@ -37,6 +38,7 @@ function Header({ bgImage = 'bg-hero-texture', varient, height = '300px', classN
                     <h1 className='text-4xl text-white font-bold'>{location.toUpperCase().replace('/', '')}</h1>
                 </div>
             </div>
+          
         </header>
     );
 }

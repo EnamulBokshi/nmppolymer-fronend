@@ -20,6 +20,7 @@ import ProductCart from './products/ProductCart';
 import RelatedProducts from './relatedProducts/RelatedProducts';
 import Testimonial from './testimonial/Testimonial';
 import Category from './category/Category';
+import SearchModal from './modals/SearchModal';
 export{
     LogoFull,
     NavPrimary,
@@ -42,4 +43,5 @@ export{
     RelatedProducts,
     Testimonial,
     Category,
+    SearchModal,
 }   

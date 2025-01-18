@@ -70,11 +70,11 @@ const Dashboard = () => {
        
           <SideBar setActiveTab={setActiveTab} activeTab={activeTab}/>
         {/* Main Content Section */}
-        <section className="flex-1 p-4 bg-gray-200">
+        <section className="flex-1 p-5 bg-gray-200">
           <Welcome />
 
           {/* Contents */}
-          <div className="p-5 rounded-lg">
+          <div className="rounded-lg py-5 my-10  ">
             {
               activeTab == "home" && <Home />
 

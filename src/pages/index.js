@@ -7,6 +7,8 @@ import ContactUs from './contact/ContactUs';
 import StoreLocator from './storeLocator/StoreLocator';
 import About from './about/About';
 import AllProducts from './products/AllProducts';
+import Login from './admin/login/Login';
+import Registration from './admin/registration/Registration';
 export {
     Main,
     Boilerplate,
@@ -17,4 +19,6 @@ export {
     StoreLocator,
     About,
     AllProducts,
+    Login,
+    Registration,
 }

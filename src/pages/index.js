@@ -9,6 +9,7 @@ import About from './about/About';
 import AllProducts from './products/AllProducts';
 import Login from './admin/login/Login';
 import Registration from './admin/registration/Registration';
+import NotFound from './Notfound.jsx'
 export {
     Main,
     Boilerplate,
@@ -21,4 +22,6 @@ export {
     AllProducts,
     Login,
     Registration,
+    NotFound,
 }
+

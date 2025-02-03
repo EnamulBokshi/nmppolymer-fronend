@@ -1,17 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaUserCircle, FaBars, FaSearch } from "react-icons/fa";
-import { AiFillHome } from "react-icons/ai";
+import { FaUserCircle} from "react-icons/fa";
 import Welcome from "./utils/Welcome";
 import SideBar from "./utils/SideBar";
 import Home from "./utils/Home";
 import Posts from "./utils/Posts";
 import Settings from "./utils/Settings";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addNotification, removeNotification, markAsRead, clearNotifications  } from "../../../components/store/notificationSlicer";
+import DashboardHeader from "./utils/DashboardHeader";
+
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const notifications = useSelector((state) => state.notification.notifications);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const popoverRef = useRef(null);
   const [activeTab, setActiveTab] = useState("home");
   console.log(activeTab);
+  console.log("Dashboard");
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -33,9 +40,14 @@ const Dashboard = () => {
     };
   }, []);
 
+  function LogOut(){
+    localStorage.clear();
+    window.location.reload();
+  }
+
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center justify-between p-4 bg-black/50 backdrop-blur-md text-white relative">
+      {/* <header className="flex items-center justify-between p-4 bg-black/50 backdrop-blur-md text-white relative">
         <div className="text-lg font-bold">MyLogo</div>
         <div className="flex items-center relative">
           <FaUserCircle
@@ -58,14 +70,16 @@ const Dashboard = () => {
                 <li className="px-4 py-2 hover:bg-gray-600 cursor-pointer">
                   Settings
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-600 cursor-pointer">
+                <li className="px-4 py-2 hover:bg-gray-600 cursor-pointer" onClick={LogOut}>
                   Logout
                 </li>
               </ul>
             </div>
           )}
         </div>
-      </header>
+        <div>Notification center</div>
+      </header> */}
+      <DashboardHeader />
       <div className="flex flex-1">
        
           <SideBar setActiveTab={setActiveTab} activeTab={activeTab}/>
@@ -89,6 +103,7 @@ const Dashboard = () => {
           </div>
         </section>
       </div>
+
     </div>
   );
 };

@@ -1,8 +1,18 @@
 // Desc: Main App component
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, ProductDetails,StoreLocator,ContactUs, Registration,About,AllProducts,Dashoboard, Login} from './pages';
+import { Home,NotFound ,ProductDetails,StoreLocator,ContactUs, Registration,About,AllProducts,Dashoboard, Login} from './pages';
 import 'tailwindcss/tailwind.css';
+import { ProtectedRoutes } from './components';
+
+import { useGetProducts } from './hooks/useGetProducts';
+
+import { useGetCategories } from './hooks/useGetCategories';
+
 function App() {
+  
+
+
   return (
     <Router>
       <Routes>
@@ -12,13 +22,25 @@ function App() {
         <Route path='/contact' element={<ContactUs />} />
         <Route path='/about' element={<About />} />
         <Route path='/products' element={<AllProducts />} />
-        <Route path='/admin/dashboard' element={<Dashoboard />} />
+        <Route path='/admin/dashboard' element={
+          <ProtectedRoutes >
+            <Dashoboard />
+          </ProtectedRoutes>
+        } />
         <Route path='/admin/login' element={<Login/>} />
-        <Route path='/admin/registration' element={<Registration />} />
-        <Route path="*" element={<Home />} />
+        <Route path='/admin/registration' element={
+          <ProtectedRoutes >
+            <Registration />
+          </ProtectedRoutes>
+        } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 
 }
-export default App
+export default App;
+
+
+  
+

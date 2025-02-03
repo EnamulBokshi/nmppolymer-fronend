@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { notificationSlicer, Products } from "..";
+import { notificationSlicer } from "..";
 import { categorySlicer } from "..";
 import { productSlicer } from "..";
+import authSlicer from './auth'
+
 const store = configureStore({
     reducer: {
         notification: notificationSlicer,
-        category: categorySlicer,
+        categories: categorySlicer,
         products: productSlicer,
+        auth: authSlicer,
     }   
 });
 

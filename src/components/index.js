@@ -1,5 +1,6 @@
 // Desc: Import and export all components
 import LogoFull from '../assets/logo.jpeg';
+import NoImage from '../assets/no_image.png';
 import Header from './header/Header';
 import NavPrimary from './navs/NavPrimary';
 import Footer from './footer/Footer';
@@ -21,8 +22,10 @@ import RelatedProducts from './relatedProducts/RelatedProducts';
 import Testimonial from './testimonial/Testimonial';
 import Category from './category/Category';
 import SearchModal from './modals/SearchModal';
+import ProtectedRoutes from './ProtectedRoutes';
 export{
     LogoFull,
+    NoImage,
     NavPrimary,
     Footer,
     Header,
@@ -44,4 +47,5 @@ export{
     Testimonial,
     Category,
     SearchModal,
+    ProtectedRoutes,
 }   

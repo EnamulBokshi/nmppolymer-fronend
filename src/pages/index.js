@@ -10,6 +10,7 @@ import AllProducts from './products/AllProducts';
 import Login from './admin/login/Login';
 import Registration from './admin/registration/Registration';
 import NotFound from './Notfound.jsx'
+import UpdatePost from './admin/dashboard/utils/posts/UpdatePost.jsx';
 export {
     Main,
     Boilerplate,
@@ -23,5 +24,6 @@ export {
     Login,
     Registration,
     NotFound,
+    UpdatePost,
 }
 

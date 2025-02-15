@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import {Boilerplate } from '../../components';
 import { CiHome, CiPhone } from 'react-icons/ci';
 import { FiMail } from 'react-icons/fi';
+import {usePostContact,useGetContacts} from '../../hooks/useContact';
 const ContactUs = () => {
+    const {mutate:contactMutation,isLoading,isError,error} = usePostContact();
+    const {data:contacts} = useGetContacts();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -27,9 +30,29 @@ const ContactUs = () => {
         // Simulate form submission
         setTimeout(() => {
             setLoading(false);
-            alert('Form submitted successfully!');
+            contactMutation(formData,{
+                onSuccess:(data)=>{
+                    setFormData({
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        category: 'suggestion',
+                        message: ''
+                    });
+                    alert('Contact submitted successfully');
+                    console.log('Contact submitted successfully!! ',data);
+                },
+                onError:(error)=>{
+                    console.log('Error submitting contact: ',error);
+                    alert('Error submitting contact');
+                }
+            });
         }, 2000);
     };
+
+if(contacts){
+    console.log('Contacts: ',contacts);
+}
 
     return (
         <Boilerplate bgImage={'bg-contact-texture'}>
@@ -90,7 +113,7 @@ const ContactUs = () => {
                             type='submit'
                             className='bg-red-900 text-white py-2 rounded'
                         >
-                            {loading ? 'Loading...' : 'Submit'}
+                            {loading ? 'Submetting...' : 'Submit'}
                         </button>       
                     </form>
 

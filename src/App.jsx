@@ -1,7 +1,7 @@
 // Desc: Main App component
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home,NotFound ,ProductDetails,StoreLocator,ContactUs, Registration,About,AllProducts,Dashoboard, Login} from './pages';
+import { Home,NotFound ,ProductDetails,StoreLocator,ContactUs, UpdatePost,Registration,About,AllProducts,Dashoboard, Login} from './pages';
 import 'tailwindcss/tailwind.css';
 import { ProtectedRoutes } from './components';
 
@@ -33,6 +33,13 @@ function App() {
             <Registration />
           </ProtectedRoutes>
         } />
+        <Route path='/admin/update-product/:id' element={
+          <ProtectedRoutes >
+            <UpdatePost />
+          </ProtectedRoutes>
+        } />
+        
+        <Route path='/products/?category_id=:category' element={<AllProducts />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

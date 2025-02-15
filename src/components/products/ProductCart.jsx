@@ -1,29 +1,60 @@
 import React from "react";
-import {BtnPrimary} from "..";
-import { Link } from "react-router";
-function ProductCart({product}) {
-  const navigateToProductDetails = () => {
-    console.log('Navigate to product details');
-  }
-  // console.log(product)
+import { Link } from "react-router-dom";
+import { titleMaxLength } from "../../constant";
+import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa6";
+
+function ProductCart({ product }) {
   return (
-    <div className="p-4 rounded bg-gray-50 flex flex-col  relative flex-wrap hover:scale-105 group transition-transform duration-300 ease-in-out">
-      <div className="flex items-center justify-center">
-        <img src={product?.image || product?.image2 || product?.image3} alt="" className=" rounded-lg shadow-sm max-h-36 " />
+    <motion.div
+      whileHover={{ y: -5 }}
+      className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-w-4 aspect-h-3 overflow-hidden">
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="h-full w-full"
+        >
+          <img 
+            src={product?.image || product?.image2 || product?.image3} 
+            alt={product?.name}
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
-      <div className="pt-3">
-        <h1 className="text-gray-700 text-sm">{product?.category}</h1>
-        <p className="font-bold font-serif">
-            {product?.name}
+
+      {/* Content Container */}
+      <div className="p-4 space-y-2">
+        {/* Category Badge */}
+        <span className="inline-block px-2 py-1 text-xs font-semibold bg-gray-100 text-gray-600 rounded-full">
+          {product?.categoryName}
+        </span>
+
+        {/* Product Name */}
+        <h2 className="font-serif font-bold text-gray-800 line-clamp-1">
+          {product?.name.length > titleMaxLength 
+            ? `${product?.name.slice(0, titleMaxLength)}...` 
+            : product?.name}
+        </h2>
+
+        {/* Price */}
+        <p className="text-red-600 font-bold">
+          ${product?.price?.toLocaleString()}
         </p>
-        {/* <BtnPrimary className="hidden group-hover:block">Details</BtnPrimary> */}
-        <div className="absolute  rounded-lg w-full h-full cursor-pointer inset-0 bg-gray-700 bg-opacity-50 hidden  group-hover:flex justify-center items-center">
-            <Link to={`/product-details/${product?.id}`} className="px-4 py-2 text-white rounded bg-blue-700">Details</Link>
-            {/* <BtnPrimary  className="" onClick={()=> navigateToProductDetails(index)}>Details</BtnPrimary> */}
-        </div>
-        
+
+        {/* Action Button */}
+        <Link 
+          to={`/product-details/${product?.id}`}
+          className="group inline-flex items-center gap-2 text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
+        >
+          View Details
+          <FaArrowRight className="transform group-hover:translate-x-1 transition-transform" />
+        </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

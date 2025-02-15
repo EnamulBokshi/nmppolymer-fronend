@@ -15,7 +15,7 @@ export const getProducts =  ()=> {
 }
 export const getProduct = (id)=>{
     return new Promise ((resolve,reject)=>{
-        api.get(`/api/product/${id}/`)
+        api.get(`/api/products/${id}/`)
         .then(({data})=>{
             setTimeout(()=>{
                 resolve(data)

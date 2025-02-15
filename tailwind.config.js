@@ -12,9 +12,16 @@ export default {
         'hero-dark':    "url('https://images.pexels.com/photos/3977166/pexels-photo-3977166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')",
         'about-texture':   "url('https://cdn.pixabay.com/photo/2014/08/15/06/16/imprint-418594_960_720.jpg')",
         'contact-texture': "url('https://cdn.pixabay.com/photo/2022/01/06/11/44/envelopes-6919301_960_720.jpg')",
-      }
-    }
+      },
+      aspectRatio: {
+        'w-16': '16',
+        'h-9': '9',
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+  ],
 }
 

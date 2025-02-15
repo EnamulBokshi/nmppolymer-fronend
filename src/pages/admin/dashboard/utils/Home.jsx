@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import dataFormat,{masks}  from 'dateformat'
 import { AddCategory, DummyChart, StatsCard, useCategory } from "..";
 import { FaUsers } from "react-icons/fa";
 import { FaUsersViewfinder } from "react-icons/fa6";
@@ -9,8 +10,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCategories } from "../../../../components/store/categorySlicer";
 import { ACCESS_TOKEN } from "../../../../constant";
 import api from "../../../../api";
+import { useMutation } from "@tanstack/react-query";
+import { useGetContacts } from "../../../../hooks/useContact";
 function Home() {
   const categoryQuery = useCategory();
+  const {data:contactsData,isLoading:isContactLoading, isError:isContactError,error:contactError} = useGetContacts();
   const data = async () => {
     const res = await api.get("/api/categories/");
     return res.data;
@@ -25,6 +29,8 @@ function Home() {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  
 
   const handleSort = (field) => {
     const order = sortField === field && sortOrder === 'asc' ? 'desc' : 'asc';
@@ -51,6 +57,32 @@ function Home() {
     responsive: true,
   };
 
+
+const handleCategoryEdit = (id) => {
+  // const {data,loading,error} = useMutation();
+  console.log("Edit Category",id);
+
+};
+const {mutate:deleteCategory,isLoading,isError,error} = useMutation(
+  {
+    mutationKey: ['deleteCategory'],
+    mutationFn: async (id) => {
+      const response = await api.delete(`/api/category/delete/${id}/`, {
+        headers: {  
+          Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
+        },
+      });
+      return response.data;
+    },
+  }
+);
+
+const handleCategoryDelete = (id) => {
+  deleteCategory(id);
+};
+if(contactError){
+  console.log("Contact Error: ",contactError);
+}
 
 useEffect(() => {
   data().then((res) => {
@@ -196,6 +228,7 @@ useEffect(() => {
               // AddCategory component
               <AddCategory />
             }
+
           </div>
           <div className="mt-5 overflow-x-auto">
             <table className="w-full shadow-lg rounded-lg overflow-hidden">
@@ -214,8 +247,8 @@ useEffect(() => {
                   <tr className="hover:bg-gray-100" key={category.id}>
                   <td className="py-3 px-4">{category.name}</td>
                   <td className="py-3 px-4 flex items-center justify-evenly">
-                    <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
-                    <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" onClick={()=>handleCategoryEdit(category.id)}>Edit</button>
+                    <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" onClick={()=>handleCategoryDelete(category.id)}>Delete</button>
                   </td>
                 </tr>
                 ))
@@ -225,6 +258,50 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
+      {/* Contact table */}
+    <div className="my-5 py-5 grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="bg-neutral-100 p-5 rounded-lg shadow overflow-x-auto">
+        <h1 className="text-3xl text-center font-sarif font-bold py-3">Contact</h1>
+        <table className="table-auto w-full rounded-lg shadow-lg p-4">
+          <thead className="bg-gray-800  text-white">
+            <tr className="text-center rounded ">
+              <th className="py-3 px-2 ">Name</th>
+              <th className="py-3 px-2 ">Email</th>
+              <th className="py-3 px-2 ">Message</th>
+              <th className="py-3 px-2">Date</th>
+              <th className="py-3 px-2 ">Action</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            {
+              isContactLoading && <tr><td colSpan="5" className="text-center">Loading...</td></tr>
+            }
+            {
+              isContactError && <tr><td colSpan="5" className="text-center">Error...</td></tr>
+            }
+            {
+              contactsData && contactsData.map((contact) => (
+                <tr key={contact.id} className="text-center">
+                  <td className="py-3 px-2">{contact.firstName + ' ' + contact.lastName}</td>
+                  <td className="py-3 px-2">{contact.email}</td>
+                  <td className="py-3 px-2">{contact.message.length > 15 ? contact.message.split(0,15)+'...': contact.message}</td>
+                  <td className="py-3 px-2">{contact.created_at}</td>
+                  <td className="py-3 px-2 space-x-3">
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Reply</button>
+                    <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
     </section>
   );
 }

@@ -1,17 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { NoImage } from '../../../../../components';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ACCESS_TOKEN } from '../../../../../constant';
 import api from '../../../../../api';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { addNotification} from '../../../../../components/store/notificationSlicer';
+import { useCategory } from '../..';
+import { usePostProducts } from '../../../../../hooks/usePostProducts';
 const fetchCategory = async () => {
     const response = await api.get('/api/categories/');
     return response.data;
 };
 
-function AddPost({ close }) {
+function AddPost({ close,proudct=null }) {
+    const client = useQueryClient()
+
     const dispatch = useDispatch();    
 
     const baseURL = import.meta.env.VITE_API_URL;
@@ -23,18 +27,11 @@ function AddPost({ close }) {
     const [loading, setLoading] = useState(false);
     const [images, setImages] = useState([null, null, null, null]);
     const [imagePreviews, setImagePreviews] = useState([null, null, null, null]);
-
+    const closeBtnRef = useRef(null)
     const user_id = useSelector(state => state.auth.user?.id);
     const imageRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
-    const categories = useQuery({
-        queryKey: ['categories'],
-        queryFn: fetchCategory,
-        onError: (error) => setError(error.message),
-        staleTime: 1000 * 60 * 5,
-        cacheTime: 1000 * 60 * 30,
-    });
-
+    const {data:categories} = useCategory()
     const post = useMutation({
         mutationKey: ['addProduct'], 
         mutationFn: async (data) => {
@@ -61,10 +58,17 @@ function AddPost({ close }) {
             } else {
                 dispatch(addNotification({ id: Date.now(), message: 'Product added successfully', type: 'success', read: false }));
             }
+
+            client.invalidateQueries('products');
             close();
+
+
         },
     });
     
+
+    const {mutate:postProduct,isLoading,isError} = usePostProducts();
+
 
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
@@ -87,7 +91,7 @@ function AddPost({ close }) {
 
     const handlePost = (e) => {
         e.preventDefault();
-        if (!name || !price || !category || !description || images.includes(null)) {
+        if (!name || !price || !category || !description) {
             setError('Please fill all fields and upload 4 images');
             return;
         }
@@ -95,15 +99,43 @@ function AddPost({ close }) {
         setLoading(true);
         setError('');
 
-        const postData = new FormData();
-        postData.append('name', name);
-        postData.append('price', price);
-        postData.append('description', description);
-        images.forEach((img, i) => postData.append(`image${i + 1}`, img));
-        postData.append('category', category);
-        if (user_id) postData.append('user', user_id);
+       try {
+         const postData = new FormData();
+         postData.append('name', name);
+         postData.append('price', price);
+         postData.append('description', description);
+        //  images.forEach((img, i) => {
+        //     if (img){
+        //         postData.append(`image${i + 1}`, img)
+        //     }
+        //  });
+        if(images[0]){
+            postData.append('image', images[0]);
 
-        post.mutate(postData);
+        }
+        if(images[1]){
+            postData.append('image', images[1]);
+
+        }
+        if(images[2]){
+            postData.append('image', images[2]);
+        }
+        if(images[3]){
+            postData.append('image', images[3]);
+        }
+         postData.append('category', category);
+         if (user_id) postData.append('user', user_id);
+ 
+         postProduct(postData);
+         alert('Product added sucessfully')
+         closeBtnRef.current.click();
+       } catch (error) {
+        setError('something went wrong!!')
+        setLoading(false)
+       }
+       finally{
+        setLoading(false)
+       }
     };
 
     return (
@@ -119,7 +151,7 @@ function AddPost({ close }) {
 
                     <select value={category} onChange={(e) => setCategory(e.target.value)} className="p-2 rounded-lg border">
                         <option value="" disabled>Select a Category</option>
-                        {categories.data?.map((cat) => (
+                        {categories?.map((cat) => (
                             <option key={cat.id} value={cat.id}>{cat.name.toUpperCase()}</option>
                         ))}
                     </select>
@@ -145,7 +177,7 @@ function AddPost({ close }) {
                         {loading ? 'Adding...' : 'Save'}
                     </button>
                 </form>
-                <button className="w-full mt-3 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800" onClick={close}>Close</button>
+                <button ref={closeBtnRef} className="w-full mt-3 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800" onClick={close}>Close</button>
             </div>
         </section>
     );

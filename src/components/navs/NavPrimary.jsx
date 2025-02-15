@@ -3,38 +3,88 @@ import { BtnPrimary, LogoFull, SearchModal } from "..";
 import { CiMenuFries } from "react-icons/ci";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Navigation items moved to constants
+const NAV_ITEMS = [
+  { name: "Home", link: "/" },
+  { name: "Store", link: "/store" },
+  { name: "About", link: "/about" },
+  { name: "Contact", link: "/contact" },
+  { name: "Products", link: "/products" },
+];
 
 function NavPrimary({ className = "", searchOnClick }) {
-  const navItems = [
-    {
-      name: "Home",
-      link: "/",
-    },
-    {
-      name: "Store",
-      link: "/store",
-    },
-    {
-      name: "About",
-      link: "/about",
-    },
-    {
-      name: "Contact",
-      link: "/contact",
-    },
-    {
-      name: "Products",
-      link: "/products",
-    },
-  ];
   const location = useLocation();
-
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [active, setActive] = useState("Home");
   const [showSearch, setShowSearch] = useState(false);
+
+  // Navigation Link Component
+  const NavLink = ({ item }) => (
+    <motion.div
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <Link
+        to={item.link}
+        className={`${isSticky ? "" : "text-white"} 
+          ${active === item.name ? "border-b border-red-900" : ""}
+          font-bold text-center relative group px-3`}
+      >
+        {item.name}
+        <motion.span
+          className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-900"
+          whileHover={{ width: "100%" }}
+          transition={{ duration: 0.2 }}
+        />
+      </Link>
+    </motion.div>
+  );
+
+  // Desktop Navigation
+  const DesktopNav = () => (
+    <div className="hidden md:flex gap-4 items-center justify-center">
+      {NAV_ITEMS.map((item, index) => (
+        <NavLink key={index} item={item} />
+      ))}
+    </div>
+  );
+
+  // Mobile Navigation
+  const MobileNav = () => (
+    <AnimatePresence>
+      {showMenu && (
+        <motion.div
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -100 }}
+          transition={{ duration: 0.3 }}
+          className="p-10 flex items-center justify-center absolute top-0 right-0 py-32 left-0 bg-black/90"
+        >
+          <motion.button
+            whileHover={{ scale: 1.1, color: "#ef4444" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleMenu}
+            className="text-3xl text-white rounded bg-slate-800 cursor-pointer absolute top-5 right-5"
+          >
+            <IoClose />
+          </motion.button>
+
+          <div className="flex flex-col gap-y-4">
+            {NAV_ITEMS.map((item, index) => (
+              <NavLink key={index} item={item} />
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   const handleSearch = () => {
     setShowSearch((prev) => !prev);
     console.log("search clicked");
@@ -57,37 +107,32 @@ function NavPrimary({ className = "", searchOnClick }) {
   }, []);
 
   useEffect(() => {
-    navItems.forEach((item) => {
+    NAV_ITEMS.forEach((item) => {
       if (location.pathname === item.link) {
         setActive(item.name);
       }
     });
   }, [location]);
+
+  const handleSearchClick = (id) => {
+    navigate(`/product-details/${id}`);
+    setShowSearch(false);
+  }
+
   return (
-    <nav
-      className={` ${className} md:px-20  px-5   items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`${className} md:px-20 px-5 items-center bg-transparent justify-between transition-all duration-500 ease-in-out ${
         isSticky
           ? "fixed top-0 w-full py-2 bg-white/40 backdrop-blur shadow-lg z-50"
           : "py-5 relative"
       }`}
     >
       <div className="flex gap-4 justify-between items-center">
-        <img src={LogoFull} alt="Logo" className="w-16 rounded-full" />
+        <img src={LogoFull} alt="Logo" className="w-16 rounded-full cursor-pointer" onClick={()=>navigate('/')}/>
 
-        <div className="hidden md:flex gap-4 items-center justify-center">
-          {navItems.map((item, index) => (
-            <Link
-              key={index}
-              to={`${item.link}`}
-              className={`${isSticky ? "" : "text-white"} ${
-                active == item.name ? "border-b border-red-900" : ""
-              }font-bold text-center relative group px-3 `}
-            >
-              {item.name}
-              <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-            </Link>
-          ))}
-        </div>
+        <DesktopNav />
 
         <div className="flex gap-4 items-center">
           <div className="md:hidden">
@@ -111,29 +156,7 @@ function NavPrimary({ className = "", searchOnClick }) {
         </div>
       </div>
 
-      <div
-        className={`p-10 flex items-center justify-center absolute top-0 right-0 py-32 left-0 bg-black/90 transition-all duration-500 ease-in-out transform ${
-          showMenu ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
-      >
-        <IoClose
-          className="text-3xl text-white rounded bg-slate-800 cursor-pointer absolute top-5 right-5 hover:scale-110 transition-transform ease-in-out duration-200 hover:text-red-700"
-          onClick={toggleMenu}
-        />
-
-        <div className="flex flex-col gap-y-4">
-          {navItems.map((item, index) => (
-            <Link
-              key={index}
-              to={`${item.link}`}
-              className="text-white font-bold text-center relative group px-3"
-            >
-              {item.name}
-              <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-900 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-            </Link>
-          ))}
-        </div>
-      </div>
+      <MobileNav />
 
       <div></div>
 
@@ -145,10 +168,10 @@ function NavPrimary({ className = "", searchOnClick }) {
           >
             X
           </div>
-          <SearchModal />
+          <SearchModal callBack={handleSearchClick}/>
         </div>
       )}
-    </nav>
+    </motion.nav>
   );
 }
 

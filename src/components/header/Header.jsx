@@ -14,14 +14,14 @@ function Header({ bgImage = 'bg-hero-texture', varient, height = '300px', classN
             <div className={`bg-black/60 h-[${height}]`}>
                 <div className='flex justify-between z-20 bg-black/50 px-5 py-2'>
                     <div className='flex gap-3 z-20'>
-                        <FaSquareFacebook className='text-white text-2xl' />
-                        <FaInstagram className='text-white text-2xl' />
-                        <CiLinkedin className='text-white text-2xl' />
-                        <CiTwitter className='text-white text-2xl' />
+                        <FaSquareFacebook className='text-white text-xl md:text-2xl' />
+                        <FaInstagram className='text-white text-xl md:text-2xl' />
+                        <CiLinkedin className='text-white text-xl md:text-2xl' />
+                        <CiTwitter className='text-white text-xl md:text-2xl' />
                     </div>
                     <div className='z-20'>
                         <p className='flex gap-2'>
-                            <IoCallOutline className='text-white text-2xl' />
+                            <IoCallOutline className='text-white text-xl md:text-2xl' />
                             <span className='text-neutral-50 font-serif'>+880 17533-20642</span>
                         </p>
                     </div>

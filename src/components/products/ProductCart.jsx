@@ -30,7 +30,7 @@ function ProductCart({ product }) {
       <div className="p-4 space-y-2">
         {/* Category Badge */}
         <span className="inline-block px-2 py-1 text-xs font-semibold bg-gray-100 text-gray-600 rounded-full">
-          {product?.categoryName}
+          {product?.category_name}
         </span>
 
         {/* Product Name */}

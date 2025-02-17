@@ -1,23 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Boilerplate } from '..';
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import { useGetProductDetails, useGetProducts } from '../../hooks/useGetProducts';
 import { RelatedProducts } from '../../components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaSpinner } from 'react-icons/fa';
 
 function ProductDetails() {
   const { id } = useParams();
   const { data: product, error, isLoading } = useGetProductDetails(id);
   const { data: products } = useGetProducts();
+
+  // Display Image State
   const [displayImage, setDisplayImage] = useState("");
 
+  // Update displayImage when product loads
   useEffect(() => {
-    if (product?.image) setDisplayImage(product.image);
-    else if (product?.image2) setDisplayImage(product.image2);
-    else if (product?.image3) setDisplayImage(product.image3);
-    else if (product?.image4) setDisplayImage(product.image4);
+    if (product?.image) {
+      setDisplayImage(product.image);
+    }
+    else if(product?.image2){
+      setDisplayImage(product.image2);
+    }
+    else if(product?.image3){
+      setDisplayImage(product.image3);
+    }
+    else if(product?.image4){
+      setDisplayImage(product.image4);
+    }
   }, [product]);
 
+  // Filter related products
   const related = products?.filter(
     (p) => p.category === product?.category && p.id !== product?.id
   ) || [];
@@ -49,20 +62,14 @@ function ProductDetails() {
   return (
     <Boilerplate height="0px">
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="flex flex-col md:flex-row justify-start gap-5 items-start w-full">
+          <div className={`p-4 shadow space-y-3 rounded-lg w-full ${isLoading? 'items-center justify-center':''} `}>
             {isLoading ? (
-              <div className="col-span-full flex justify-center items-center">
-                <p className="text-center text-lg font-semibold animate-pulse">
-                  Loading product details...
-                </p>
-              </div>
+              <p className="text-center text-lg font-semibold flex items-center justify-center"><FaSpinner className='animate-spin'/></p>
             ) : error || !product ? (
-              <div className="col-span-full flex justify-center items-center">
-                <p className="text-center text-red-500 font-bold">
-                  {error ? error.message : "Product not found"}
-                </p>
-              </div>
+              <p className="text-center text-red-500 font-bold">
+                {error ? error.message : "Product not found"}
+              </p>
             ) : (
               <>
                 {/* Product Images Section */}
@@ -113,57 +120,34 @@ function ProductDetails() {
                   </div>
                 </div>
 
-                {/* Product Info Section */}
-                <div className="space-y-6 p-4">
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900">
-                      {product.name}
-                    </h1>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Category: {product?.categoryName || 'Uncategorized'}
-                    </p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <p className="text-xl font-bold text-red-600">
-                      ${product.price.toLocaleString()}
-                    </p>
-                    
-                    <div className="prose prose-sm sm:prose">
-                      <h3 className="text-lg font-medium text-gray-900">Description</h3>
-                      <p className="text-gray-700">{product.description}</p>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                    <button className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 
-                      transition duration-200 ease-in-out transform hover:-translate-y-1 focus:outline-none 
-                      focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-md">
-                      Add to Cart
-                    </button>
-                    <button className="flex-1 bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 
-                      transition duration-200 ease-in-out transform hover:-translate-y-1 focus:outline-none 
-                      focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 shadow-md">
-                      Buy Now
-                    </button>
-                  </div>
+                {/* Product Info */}
+                <h1 className="text-3xl font-serif">{product.name}</h1>
+                <p className="text-lg text-neutral-500">{"Summary"}</p>
+                <p className="text-lg">{product.description}</p>
+                <p className="text-lg">
+                  <span className="font-bold">Price: $</span>{product.price}
+                </p>
+                <p className="text-lg">
+                  <span className="font-bold">Category: </span>
+                  <Link to={`/products/?category_id=${product?.category}`} className="text-red-500 hover:underline">
+                  {product?.category_name}
+                  </Link>
+                </p>
+                <div className="flex gap-5">
+                  <button className="bg-red-500 text-neutral-50 px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    Add to Cart
+                  </button>
+                  <button className="bg-red-500 text-neutral-50 px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    Buy Now
+                  </button>
                 </div>
               </>
             )}
           </div>
-
-          {/* Related Products Section */}
-          <div className="mt-16 bg-white p-4 rounded-lg shadow-lg">
-            {/* <h2 className="text-2xl font-serif font-bold mb-8 ">Related Products</h2> */}
-            {related.length > 0 ? (
-              <RelatedProducts products={related} />
-            ) : (
-              <p className="text-gray-500 text-center">No related products found</p>
-            )}
-          </div>
         </div>
       </section>
+
+      <RelatedProducts products={related} />
     </Boilerplate>
   );
 }

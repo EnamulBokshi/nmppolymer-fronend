@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { SearchBox, ProductCart, RelatedProducts } from '../../components'
 import { useGetProducts } from '../../hooks/useGetProducts'
 import { useGetCategories } from '../../hooks/useGetCategories'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRight, FaSpinner } from 'react-icons/fa6'
 import { useSearchParams } from 'react-router-dom'
 
 function AllProducts() {
@@ -50,8 +50,6 @@ function AllProducts() {
         }
     };
 
-
-
     // Search handler
     const handleSearch = (searchTerm) => {
         setCurrentPage(1);
@@ -80,9 +78,7 @@ function AllProducts() {
         setCurrentPage(prev => (prev > 1 ? prev - 1 : totalPages));
     };
 
-    if (isPending) return <h1 className="text-center">Loading...</h1>;
-    if (error) return <div>{error}</div>;
-    if (!products || products.length === 0) return <div>No products found</div>;
+
 
     return (
         <Boilerplate>
@@ -115,6 +111,21 @@ function AllProducts() {
                     <SearchBox onChange={(e) => handleSearch(e.target.value)} />
                 </div>
 
+                            {
+                                isPending && (
+                                    <div className="flex items-center justify-center h-screen">
+                                        <p className="text-lg text-gray-500"><FaSpinner className='animate-spin'/></p>
+                                    </div>
+                                )
+                            }
+
+                            {
+                                error && (
+                                    <div className="flex items-center justify-center h-screen">
+                                        <p className="text-lg text-red-500">Error: {error.message}</p>
+                                    </div>
+                                )
+                            }
                 {/* Products Grid */}
                 <div className='container mx-auto px-4 py-8 bg-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
                     {currentProducts?.length === 0 ? (

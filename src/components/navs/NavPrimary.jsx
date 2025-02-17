@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { name: "About", link: "/about" },
   { name: "Contact", link: "/contact" },
   { name: "Products", link: "/products" },
+  { name: "News", link: "/news" },
 ];
 
 function NavPrimary({ className = "", searchOnClick }) {

@@ -2,177 +2,150 @@ import React, { useState, useEffect } from "react";
 import { IoTrashBin } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { AddPost, useCategory } from "..";
-import { useGetProducts } from "../../../../hooks/useGetProducts";
 import { motion, AnimatePresence } from "framer-motion";
-import api from "../../../../api";
-import { ACCESS_TOKEN } from "../../../../constant";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { use } from "react";
-import { SearchBox } from "../../../../components";
 import { useNavigate } from "react-router";
-import UpdatePost from "./posts/UpdatePost";
+import { useQueryClient } from "@tanstack/react-query";
+import { useGetProducts } from "../../../../hooks/useGetProducts";
 import { useDeleteProduct } from "../../../../hooks/useDeleteProduct";
+import { SearchBox } from "../../../../components";
+import { useGetCategories } from "../../../../hooks/useGetCategories";
 
 const Posts = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: products } = useGetProducts();
-  const [productList, setProductList] = useState(products || []);
-  const [showAddPost, setShowAddPost] = useState(false);
+  const { mutate, isLoading } = useDeleteProduct();
+  const { data: categories } = useGetCategories()
+
+  const [productList, setProductList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 5;
+  const [searchQuery, setSearchQuery] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const {data:categories,error:categoryErrors,isFetching} = useCategory();
-  const [showUpdateProduct, setShowUpdateProduct] = useState(false);
-  // Sync local state with products from API
+
   useEffect(() => {
     if (products) setProductList(products);
   }, [products]);
 
+  // Handle search filtering
+  useEffect(() => {
+    if (searchQuery) {
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setProductList(filteredProducts);
+    } else {
+      setProductList(products);
+    }
+  }, [searchQuery, products]);
+
+  // Handle delete confirmation
   const handleRemoveProduct = (id) => {
     setSelectedProduct(id);
     setShowConfirmModal(true);
   };
-  // const {mutate,isLoading} = useDeleteProduct();
 
-  const { mutate, isLoading } = useMutation({
-    mutationKey: ["deleteProduct"],
-    mutationFn: async (id) => {
-      try {
-        await api.delete(`/api/products/delete/${id}/`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
-          },
-        });
-        return id;
-      } catch (error) {
-        throw error.response?.data?.message || "Something went wrong.";
-      }
-    },
-    onError: (error) => {
-      setError(error || "Something went wrong.");
-      setLoading(false);
-    },
-    onSuccess: (deletedProductId) => {
-      setLoading(false);
-      setShowConfirmModal(false);
-
-      // ✅ Remove deleted product from state immediately
-      setProductList((prev) => prev.filter((p) => p.id !== deletedProductId));
-
-      // ✅ Trigger React Query to refetch products (for consistency)
-      queryClient.invalidateQueries(["products"]);
-    },
-  });
-
-  const confirmDelete = () => {
-    setLoading(true);
-    mutate(selectedProduct);
-  };
-  if(error){
-    setTimeout(() => {
-      setError('');
-    }, 2000);
-  }
-  const handleSearch = (e)=>{
-    const search = e.target.value;
-    const filteredProducts = products.filter(product => {
-      return product.name.toLowerCase().includes(search.toLowerCase());
-    });
-    setProductList(filteredProducts);
-  }
   const handleCategorySelect = (id,name) => {
     if(!id){
       setProductList(products);
       return;
     }
+  
     const filteredProducts = products.filter(product => {
       return product.category === name || product.category == id;
     });
-    console.log("Filtered Products",filteredProducts);
     setProductList(filteredProducts);
   }
-  const editPost = (product) => {
-    setShowUpdateProduct(true);
-    navigate(`/admin/update-product/${product.id}`);
-  }
-  
+  const confirmDelete = () => {
+    mutate(selectedProduct, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["products"]);
+        setShowConfirmModal(false);
+      },
+    });
+  };
+
+  // Pagination logic
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productList?.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil((productList.length || 0) / productsPerPage);
+
   return (
-    <div className="p-5 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Products Control</h1>
-      <div className="mb-4">
+    <div className="p-5 bg-white rounded shadow space-y-4">
+      <h1 className="text-2xl font-bold text-gray-700 text-center">Product Management</h1>
+
+      {/* Search & Add Button */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <SearchBox onChange={(e) => setSearchQuery(e.target.value)} data={categories} callback={handleCategorySelect}/>
         <button
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-900"
-          onClick={() => setShowAddPost(!showAddPost)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
+          onClick={() => navigate("/admin/add-product")}
         >
-          <IoIosAddCircleOutline className="inline me-2" />
-          Add New Products
+          <IoIosAddCircleOutline size={20} /> Add Product
         </button>
       </div>
-      <div className="flex flex-col gap-5">
-        <div className="bg-gray-200 p-5 rounded-lg">
-          <h1>Products</h1>
-          <div className="py-3">
-         <SearchBox onChange={handleSearch} callback={handleCategorySelect} data={categories}/>
-          </div>
-          <ul>
-            {
-              isFetching && <p>Loading...</p>
 
-            }
-            {
-              !productList.length && <p>No Products Found</p>
-            }
-            {productList?.map((product, index) => (
-              <motion.li
-                key={product.id}
-                className="mb-2 backdrop-blur-md py-3 cursor-pointer hover:bg-gray-700 bg-gray-600 rounded px-3 text-white flex justify-between items-center"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              
+      {/* Products List */}
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {currentProducts.map((product) => (
+          <motion.li
+            key={product.id}
+            className="flex justify-between items-center bg-gray-100 p-4 rounded shadow-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center gap-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-16 h-16 object-cover rounded-md"
+              />
+              <div>
+                <h2 className="text-lg font-semibold">{product.name}</h2>
+                <p className="text-gray-600 bg-lime-300 inline px-3 rounded-lg">{product.category_name}</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => navigate(`/admin/update-product/${product.id}`)}
+                className="bg-yellow-500 p-2 rounded text-white hover:bg-yellow-700"
               >
-                <div className="flex items-center gap-2" 
-                  onClick={(()=>navigate(`/product-details/${product.id}`))}
-                >
-                  <img
-                    src={product.image || product.image2 || product.image3 || product.image4}
-                    alt={product.name}
-                    className="w-10 h-10 object-cover rounded-lg hover:scale-125 duration-200 ease-in"
-                  />
-                  <div className="flex gap-2 items-center">
-                    <span className="flex-1">{product.name}</span>
-                    <span className="text-2xl text-gray-300 -mt-3">.</span>
-                    <span>{product.category}</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleRemoveProduct(product.id)}
-                    className="bg-red-500 hover:scale-105 hover:bg-red-700 hover:text-gray-300 text-white p-2 rounded"
-                  >
-                    <IoTrashBin />
-                  </button>
-                  <button
-                    onClick={() =>editPost(product)}  
-                    className="bg-yellow-500 hover:scale-105 hover:bg-yellow-700 hover:text-gray-300 text-white p-2 rounded"
-                  >
-                    <FaEdit />
-                  </button>
-                </div>
-                {/* {showUpdateProduct && <UpdatePost close={() => setShowUpdateProduct(false)} product={product}/>} */}
-              </motion.li>
-            ))}
-          </ul>
-        </div>
-        {showAddPost && <AddPost close={() => setShowAddPost(false)} />}
-        
-      </div>
+                <FaEdit />
+              </button>
+              <button
+                onClick={() => handleRemoveProduct(product.id)}
+                className="bg-red-500 p-2 rounded text-white hover:bg-red-700"
+              >
+                <IoTrashBin />
+              </button>
+            </div>
+          </motion.li>
+        ))}
+      </ul>
 
-      {/* 🔥 Animated Confirmation Modal */}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-3 mt-5">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Prev
+          </button>
+          <span className="font-semibold">Page {currentPage} of {totalPages}</span>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {showConfirmModal && (
           <motion.div
@@ -181,16 +154,9 @@ const Posts = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg text-center"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
+            <motion.div className="bg-white p-6 rounded-lg shadow-lg">
               <h2 className="text-lg font-bold mb-4">Confirm Delete</h2>
               <p>Are you sure you want to delete this product?</p>
-              {error && <p className="text-red-500">{error}</p>}
               <div className="mt-4 flex justify-center gap-4">
                 <button
                   onClick={() => setShowConfirmModal(false)}
@@ -202,7 +168,7 @@ const Posts = () => {
                   onClick={confirmDelete}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
                 >
-                  {loading ? "Deleting..." : "Yes, Delete"}
+                  {isLoading ? "Deleting..." : "Yes, Delete"}
                 </button>
               </div>
             </motion.div>

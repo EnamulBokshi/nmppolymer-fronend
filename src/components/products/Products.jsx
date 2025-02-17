@@ -27,14 +27,14 @@ function Products() {
     return () => clearInterval(timer);
   }, [products, productsPerPage, isAutoPlay]);
 
-  useEffect(() => {
-    if (products) {
-      products.forEach((product) => {
-        const category = categories?.find(cat => parseInt(cat.id) === parseInt(product.category));
-        product.categoryName = category ? category.name : "Unknown";
-      });
-    }
-  }, [products, categories]);
+  // useEffect(() => {
+  //   if (products) {
+  //     products.forEach((product) => {
+  //       const category = categories?.find(cat => parseInt(cat.id) === parseInt(product.category));
+  //       product.categoryName = category ? category.name : "Unknown";
+  //     });
+  //   }
+  // }, [products, categories]);
 
   if (!products) return <div>No products</div>;
   if (error) return <div>{error}</div>;

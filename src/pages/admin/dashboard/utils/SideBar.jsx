@@ -2,7 +2,38 @@ import React,{useEffect, useState}from 'react'
 import { FaBars } from "react-icons/fa";
 import { AiFillHome,AiFillProduct} from "react-icons/ai";
 import { CiSettings } from 'react-icons/ci';
+import { TiNews } from "react-icons/ti";
+import { RiContactsFill } from "react-icons/ri";
 function SideBar({activeTab, setActiveTab}) {
+
+  const sideBarItems = [
+    {
+      title: "Home",
+      icon: <AiFillHome  className="inline" size={20} />,
+      onClick: () => setActiveTab("home"),
+    },
+    {
+      title: "Posts",
+      icon: <AiFillProduct  className="inline" size={20} />,
+      onClick: () => setActiveTab("posts"),
+    },
+    {
+      title: "Contact",
+      icon: <RiContactsFill  className="inline" size={20} />,
+      onClick: () => setActiveTab("contact"),
+    },
+    {
+      title:"News",
+      icon: <TiNews  className="inline" size={20} />,
+      onClick: () => setActiveTab("news"),
+    },
+    {
+      title: "Settings",
+      icon: <CiSettings  className="inline" size={20} />,
+      onClick: () => setActiveTab("settings"),
+    },
+
+  ]
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     
@@ -24,45 +55,15 @@ function SideBar({activeTab, setActiveTab}) {
           </div>
           <nav className="mt-4">
             <ul className="duration-200 transition-transform">
-              <li
-                className={`flex items-center duration-200 transition-transform ease-in ${
-                  !isSidebarOpen && "justify-center"
-                } p-2 ${
-                  activeTab == "home"
-                    ? "bg-gray-200 text-sky-700"
-                    : " text-white"
-                } hover:text-sky-700 rounded-lg hover:bg-gray-200 font-bold cursor-pointer`}
-                onClick={() => setActiveTab("home")}
-              >
-                <AiFillHome className="inline" size={20} />
-                {isSidebarOpen && <span className="ms-2">Home</span>}
-              </li>
-              <li
-                className={`flex items-center duration-200 transition-transform ease-in ${
-                  !isSidebarOpen && "justify-center"
-                } hover:text-sky-700 p-2 ${
-                  activeTab == "post"
-                    ? "bg-gray-200 text-sky-700"
-                    : " text-white"
-                } rounded-lg hover:bg-gray-200 font-bold cursor-pointer`}
-                onClick={() => setActiveTab("post")}
-              >
-                <AiFillProduct className="inline" size={20} />
-                {isSidebarOpen && <span className="ms-2">Posts</span>}
-              </li>
-              <li
-                className={`flex items-center duration-200 transition-transform ease-in ${
-                  !isSidebarOpen && "justify-center"
-                } p-2 ${
-                  activeTab == "settings"
-                    ? "bg-gray-200 text-sky-700"
-                    : " text-white"
-                } rounded-lg hover:bg-gray-200 hover:text-sky-700 font-bold cursor-pointer`}
-                onClick={() => setActiveTab("settings")}
-              >
-                <CiSettings className="inline" size={20} />
-                {isSidebarOpen && <span className="ms-2">Settings</span>}
-              </li>
+              {
+                sideBarItems.map((item,index)=>
+                  <li className={`flex items-center duration-200 transition-transform ease-in ${!isSidebarOpen && "justify-center"} p-2 ${activeTab == item.title.toLowerCase() ? "bg-gray-200 text-sky-700" : " text-white"} hover:text-sky-700 rounded-lg hover:bg-gray-200 font-bold cursor-pointer`} onClick={item.onClick} key={index}>
+                    {item.icon}
+                    {isSidebarOpen && <span className="ms-2">{item.title}</span>}
+                  </li>
+
+                )
+              }
             </ul>
           </nav>
         </aside>

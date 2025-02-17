@@ -11,6 +11,9 @@ import Login from './admin/login/Login';
 import Registration from './admin/registration/Registration';
 import NotFound from './Notfound.jsx'
 import UpdatePost from './admin/dashboard/utils/posts/UpdatePost.jsx';
+import News from './admin/dashboard/utils/News.jsx';
+import AllNews from './news/AllNews.jsx';
+import NewsDetails from './news/NewsDetails.jsx';
 export {
     Main,
     Boilerplate,
@@ -25,5 +28,9 @@ export {
     Registration,
     NotFound,
     UpdatePost,
+    News,
+    AllNews,
+    NewsDetails,
+
 }
 

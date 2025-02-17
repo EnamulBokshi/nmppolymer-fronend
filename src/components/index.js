@@ -23,6 +23,7 @@ import Testimonial from './testimonial/Testimonial';
 import Category from './category/Category';
 import SearchModal from './modals/SearchModal';
 import ProtectedRoutes from './ProtectedRoutes';
+import NewsHome from './News';
 export{
     LogoFull,
     NoImage,
@@ -48,4 +49,5 @@ export{
     Category,
     SearchModal,
     ProtectedRoutes,
+    NewsHome
 }   

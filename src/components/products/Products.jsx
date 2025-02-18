@@ -27,23 +27,12 @@ function Products() {
     return () => clearInterval(timer);
   }, [products, productsPerPage, isAutoPlay]);
 
-  // useEffect(() => {
-  //   if (products) {
-  //     products.forEach((product) => {
-  //       const category = categories?.find(cat => parseInt(cat.id) === parseInt(product.category));
-  //       product.categoryName = category ? category.name : "Unknown";
-  //     });
-  //   }
-  // }, [products, categories]);
 
-  if (!products) return <div>No products</div>;
-  if (error) return <div>{error}</div>;
-  if (isPending) return <h1 className="text-center">Loading...</h1>;
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalProducts = products.length;
+  const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalProducts = products?.length;
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const handleNextPage = () => {
@@ -69,8 +58,11 @@ function Products() {
         onMouseEnter={() => setIsAutoPlay(false)}
         onMouseLeave={() => setIsAutoPlay(true)}
       >
+        {isPending && <h1 className="text-center text-gray-500">Loading products...</h1>}
+        {error && <h1 className="text-center ">No product</h1>}
+
         <AnimatePresence mode="wait">
-          {currentProducts.map((product) => (
+          {currentProducts?.map((product) => (
             <motion.div
               key={product.id}
               variants={pageVariants}
@@ -109,7 +101,7 @@ function Products() {
         <div>
           <h2 className="text-3xl font-serif">
             <span className="text-red-600">{currentPage}</span> /
-            <span className="text-gray-500">{totalPages}</span>
+            <span className="text-gray-500">{totalPages || 0}</span>
           </h2>
         </div>
       </div>

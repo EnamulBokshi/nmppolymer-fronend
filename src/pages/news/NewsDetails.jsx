@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router";
 import { useGetNewsDetails } from "../../hooks/useNews";
 import { Boilerplate } from "../../components";
+import HTMLReactParser from "html-react-parser/lib/index";
 
 function NewsDetails() {
   const { id } = useParams();
@@ -38,7 +39,7 @@ function NewsDetails() {
             className="w-full h-64 object-cover rounded-lg"
           />
 
-          <div className="bg-violet-300 rounded-lg p-5 text-white mt-5">
+          <div className="bg-gray-200 rounded-lg p-5 text-white mt-5">
             {/* News Title */}
             <h1 className="text-3xl font-bold text-gray-800 mt-6 font-sans">
               {news?.title}
@@ -52,7 +53,10 @@ function NewsDetails() {
 
             {/* News Content */}
             <p className="text-gray-700 leading-relaxed mt-6">
-              {news?.content}
+              {
+                HTMLReactParser(news?.content)
+              }
+              
             </p>
           </div>
         </div>

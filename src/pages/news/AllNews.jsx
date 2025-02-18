@@ -85,6 +85,7 @@ const AllNews = () => {
               <div
                 key={newsItem.id}
                 className="bg-white shadow-lg rounded-xl overflow-hidden transition-transform transform hover:scale-[1.03]"
+                onClick={() => navigate(`/news/${newsItem.id}`)}
               >
                 <img
                   src={newsItem.image || "https://via.placeholder.com/300"}

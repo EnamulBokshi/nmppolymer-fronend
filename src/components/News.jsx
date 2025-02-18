@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGetNews } from '../hooks/useNews';
 import { useInView } from 'react-intersection-observer';
+import { useNavigate } from 'react-router';
 
 // ✅ Extracted NewsCard Component
 const NewsCard = ({ newsItem, isLeft }) => {
+  const navigate = useNavigate()
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
 
   const itemVariants = {
@@ -21,6 +23,7 @@ const NewsCard = ({ newsItem, isLeft }) => {
       initial={isLeft ? 'hiddenLeft' : 'hiddenRight'}
       animate={inView ? 'visible' : undefined}
       exit={{ opacity: 0, y: -20 }}
+      onClick={()=>navigate(`/news/${newsItem.id}`)}
     >
       <div className="md:w-1/3">
         <img

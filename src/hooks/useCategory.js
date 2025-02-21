@@ -1,15 +1,14 @@
 
-import { useMutation, useQuery } from 'react-query'
-import { getCategory, updateCategory } from '../actions/getCategory'
+import {  useQuery } from '@tanstack/react-query'
+import { getCategory } from '../actions/getCategory'
+
 export const useCategory = () => {
     return useQuery(
         {
             queryKey: ['categories'],
-            queryFn: getCategory
+            queryFn: getCategory,
+            staleTime: 1000 * 60 * 60 * 24,
+          cacheTime: 1000 * 60 * 60 * 24,
         }
     )
-}
-
-export const useUpdateCategory = () => {
-    return useMutation(updateCategory)
 }

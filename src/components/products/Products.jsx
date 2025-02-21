@@ -13,6 +13,7 @@ function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const productsPerPage = 5;
+  if(products) console.log(products);
   useEffect(() => {
     let timer;
     if (isAutoPlay && products?.length > productsPerPage) {

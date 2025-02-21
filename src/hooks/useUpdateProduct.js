@@ -1,5 +1,7 @@
 import { useMutation,useQueryClient } from "@tanstack/react-query";
-import { updateProduct } from "../actions/updateDeleteCategory";
+import {  updateProduct} from "../actions/products";
+
+
 
 export const useUpdateProduct = () => {
     const queryClient = useQueryClient();

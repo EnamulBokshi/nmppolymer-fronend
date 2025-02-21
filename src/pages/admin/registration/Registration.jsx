@@ -6,17 +6,18 @@ import { useMutation } from "@tanstack/react-query";
 import { ACCESS_TOKEN } from "../../../constant";
 import { useNavigate } from "react-router";
 const Registration = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
+    is_superuser: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-
+  const [isSuperUser, setIsSuperUser] = useState(false);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -42,14 +43,26 @@ const Registration = () => {
       });
       return res;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       setSuccessMessage("Registration successful!");
     },
     onError: (error) => {
       setSuccessMessage("");
-      setErrors({
-        general: error?.response?.data?.message || "Error occurred",
-      });
+        if (error?.response?.data.username[0]) {
+          console.log(error.response.data.username[0]);
+          setErrors({
+            general: error.response.data.username[0],
+          });
+        }
+        else{
+          setErrors({
+            general: error?.message || "Error occurred",
+          });
+        }
+      // setErrors({
+      //   general: error?.message || "Error occurred",
+      // });
     },
     onLoading: () => {
       setErrors({});
@@ -62,15 +75,14 @@ const Registration = () => {
     if (validatePassword()) {
       const { username, email, password } = formData;
       //
-      mutation.mutate({ username, email, password });
+      mutation.mutate({...formData});
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-      <button
+        <button
           type="button"
           onClick={() => navigate(-1)}
           className="text-blue-600 hover:underline"
@@ -158,6 +170,18 @@ const Registration = () => {
                 {errors.confirmPassword}
               </p>
             )}
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="is_superuser"
+              id="userType"
+              value={formData.is_superuser}
+              onChange={handleChange}
+            />
+            <label className="text-sm text-gray-700 ms-2" htmlFor="userType">
+              Super Admin
+            </label>
           </div>
           <button
             type="submit"

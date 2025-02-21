@@ -19,7 +19,7 @@ export default function ProtectedRoutes({ children }) {
         try{
             const response = await api.post("/api/token/refresh/",{refresh:token});
             if(response.status === 200){
-                console.log(response.data);
+
                 localStorage.setItem(ACCESS_TOKEN,response.data.access)
                 setIsAuthenticated(true);
             }
@@ -34,7 +34,6 @@ export default function ProtectedRoutes({ children }) {
     }
     const auth = async()=>{
         const token = localStorage.getItem(ACCESS_TOKEN);
-        console.log("Token",token);
         if(!token){
             console.log("No token found");
             setIsAuthenticated(false);

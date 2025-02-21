@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductCart from "./ProductCart";
-import { SectionHeader } from "..";
+import { SearchBox, SectionHeader } from "..";
 import { useGetProducts } from "../../hooks/useGetProducts";
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
@@ -52,7 +52,17 @@ function Products() {
 
   return (
     <section className="md:p-10">
-      <SectionHeader />
+      {/* <SectionHeader /> */}
+      <div className='flex sm:flex-row flex-col gpa-y-3 justify-center sm:justify-between items-center  '>
+      <div>
+        <h1 className='text-3xl font-bold text-center sm:text-start'>Products</h1>
+        <p className='text-gray-400'>A 360 look at our products</p>
+      </div>
+      <div className='mb-2 sm:mb-0'>
+        {/* <SearchBox /> */}
+        <FaArrowRight className=" text-xl text-gray-500 cursor-pointer hover:text-red-500 duration-200 transition-shadow" />
+      </div>
+    </div>
       <div 
         className="container mx-auto px-4 py-8 bg-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
         onMouseEnter={() => setIsAutoPlay(false)}

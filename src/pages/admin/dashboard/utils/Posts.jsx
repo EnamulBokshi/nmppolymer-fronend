@@ -9,12 +9,14 @@ import { useGetProducts } from "../../../../hooks/useGetProducts";
 import { useDeleteProduct } from "../../../../hooks/useDeleteProduct";
 import { SearchBox } from "../../../../components";
 import { useGetCategories } from "../../../../hooks/useGetCategories";
+import { AddPost } from "..";
+import UpdatePost from "./posts/UpdatePost";
 
 const Posts = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: products } = useGetProducts();
-  const { mutate, isLoading } = useDeleteProduct();
+  const { mutate:deleteProduct, isLoading:deleting } = useDeleteProduct();
   const { data: categories } = useGetCategories()
 
   const [productList, setProductList] = useState([]);
@@ -23,6 +25,11 @@ const Posts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAddPost, setShowAddPost] = useState(false);
+  const [showUpdatePost, setShowUpdatePost] = useState(false);
+  // const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedUpdateProduct,setSelectedUpdateProduct] = useState(null); 
+
 
   useEffect(() => {
     if (products) setProductList(products);
@@ -58,7 +65,7 @@ const Posts = () => {
     setProductList(filteredProducts);
   }
   const confirmDelete = () => {
-    mutate(selectedProduct, {
+    deleteProduct(selectedProduct, {
       onSuccess: () => {
         queryClient.invalidateQueries(["products"]);
         setShowConfirmModal(false);
@@ -66,11 +73,16 @@ const Posts = () => {
     });
   };
 
+  const handleUpdateProduct = (product) =>{
+    setSelectedUpdateProduct(product);
+    setShowUpdatePost(true);
+  }
+
   // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = productList?.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil((productList.length || 0) / productsPerPage);
+  const totalPages = Math.ceil((productList?.length || 0) / productsPerPage);
 
   return (
     <div className="p-5 bg-white rounded shadow space-y-4">
@@ -81,7 +93,7 @@ const Posts = () => {
         <SearchBox onChange={(e) => setSearchQuery(e.target.value)} data={categories} callback={handleCategorySelect}/>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
-          onClick={() => navigate("/admin/add-product")}
+          onClick={() => setShowAddPost(true)}
         >
           <IoIosAddCircleOutline size={20} /> Add Product
         </button>
@@ -89,7 +101,7 @@ const Posts = () => {
 
       {/* Products List */}
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {currentProducts.map((product) => (
+        {currentProducts?.map((product) => (
           <motion.li
             key={product.id}
             className="flex justify-between items-center bg-gray-100 p-4 rounded shadow-md"
@@ -110,7 +122,7 @@ const Posts = () => {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => navigate(`/admin/update-product/${product.id}`)}
+                onClick={() => handleUpdateProduct(product)}
                 className="bg-yellow-500 p-2 rounded text-white hover:bg-yellow-700"
               >
                 <FaEdit />
@@ -145,7 +157,33 @@ const Posts = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Add Product Modal */}
+      <AnimatePresence>
+        {showAddPost && (
+          <motion.div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+          <AddPost close={() => setShowAddPost(false)} categories={categories} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Update Product Modal */}
+      <AnimatePresence>
+        {showUpdatePost && (
+          <motion.div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+          <UpdatePost callBack={setShowUpdatePost}  product={selectedUpdateProduct}/>
+          </motion.div>
+        )}
+      </AnimatePresence>
+   {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {showConfirmModal && (
           <motion.div
@@ -168,7 +206,7 @@ const Posts = () => {
                   onClick={confirmDelete}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
                 >
-                  {isLoading ? "Deleting..." : "Yes, Delete"}
+                  {deleting ? "Deleting..." : "Yes, Delete"}
                 </button>
               </div>
             </motion.div>

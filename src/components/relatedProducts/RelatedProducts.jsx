@@ -8,7 +8,7 @@ function RelatedProducts({ products,title='' }) {
 
   return (
     <div className="md:p-4 bg-white p-4 rounded-lg shadow-lg">
-      <h2 className="md:text-2xl font-sarif font-bold  font-bold mb-4">{title || 'Related Product'}</h2>
+      <h2 className="md:text-2xl font-sarif font-bold mb-4">{title || 'Related Product'}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {limitedProducts.map((product) => (
           <motion.div
@@ -20,7 +20,7 @@ function RelatedProducts({ products,title='' }) {
             <Link to={`/product-details/${product.id}`}>
               <div className="aspect-w-1 aspect-h-1 w-full">
                 <img
-                  src={product.image}
+                  src={product.image || product.image2 || product.image3 || product.image4}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />

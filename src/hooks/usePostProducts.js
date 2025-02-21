@@ -12,7 +12,7 @@ export const usePostProducts = () => {
       const previousProducts = queryClient.getQueryData(["products"]);
 
       queryClient.setQueryData(["products"], (old) =>
-        old ? [newProduct, ...old] : [newProduct]
+        old? [newProduct, ...old] : [newProduct]
       );
 
       return { previousProducts };

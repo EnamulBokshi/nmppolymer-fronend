@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchBox from '../Search'
+import { Fa500Px } from 'react-icons/fa6'
 
 function SectionHeader({title, des, children}) {
   return (
@@ -10,6 +11,7 @@ function SectionHeader({title, des, children}) {
       </div>
       <div className='mb-2 sm:mb-0'>
         <SearchBox />
+        
       </div>
     </div>
   )

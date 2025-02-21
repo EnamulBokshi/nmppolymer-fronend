@@ -18,13 +18,7 @@ const CategoryAccordion = ({ categories, setActiveSection}) => {
                             }</span>
                         <li className='px-3 py-1 list-none'>{item}</li>
                     </div>
-                    {
-                    //     activeIndex === index && (
-                    // //         <div className='text-sm text-center'>
-                    // //     ....
-                    // // </div>
-                    //     )
-                    }
+                  
                    </div>
                 ))
             }

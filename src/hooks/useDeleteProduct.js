@@ -2,7 +2,7 @@ import { useMutation,useQueryClient } from "@tanstack/react-query";
 
 import {deleteProduct} from "../actions/products";
 
-export const useDeleteProduct = async ()=>{
+export const useDeleteProduct = ()=>{
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: deleteProduct,

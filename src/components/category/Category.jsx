@@ -18,7 +18,13 @@ const Category = () => {
                 <FaSpinner className="animate-spin text-red-500" />
                 </h1>}
             {error && <h1 className="text-center text-red-500">Error: {error.message}</h1>}
-
+                {
+                    data?.length === 0 && (
+                        <div className="col-span-full text-center text-gray-500">
+                            No categories found
+                        </div>
+                    )
+                }
                 {data?.map((category) => (
                     <div key={category.id} className="p-5 border cursor-pointer hover:bg-red-800 bg-red-700  text-white text-center rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                         <h3 className="text-xl font-semibold" onClick={()=> handleNavigation(category.id)}>{category.name}</h3>

@@ -70,7 +70,11 @@ function Products() {
       >
         {isPending && <h1 className="text-center text-gray-500">Loading products...</h1>}
         {error && <h1 className="text-center ">No product</h1>}
-
+        {currentProducts?.length === 0 && (
+          <div className="col-span-full text-center text-gray-500">
+            No products found
+          </div>
+        )}
         <AnimatePresence mode="wait">
           {currentProducts?.map((product) => (
             <motion.div

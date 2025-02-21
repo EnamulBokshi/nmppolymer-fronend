@@ -106,6 +106,11 @@ function AllProducts() {
                                     {cat.name}
                                 </option>
                             ))}
+                            {
+                                category.length == 0 && (
+                                    <option value="" selected>No Category</option>
+                                )
+                            }
                         </select>
                     </div>
                     <SearchBox onChange={(e) => handleSearch(e.target.value)} />
